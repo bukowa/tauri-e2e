@@ -36,7 +36,7 @@ prerequisites:
     set -euo pipefail
     echo $(cat <<EOF
     sudo apt update &&
-    sudo apt install libwebkit2gtk-4.1-dev \
+    sudo apt install -y libwebkit2gtk-4.1-dev \
     build-essential \
     curl \
     wget \

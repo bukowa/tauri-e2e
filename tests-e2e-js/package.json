@@ -1,0 +1,15 @@
+{
+  "name": "tests-e2-js",
+  "version": "0.0.0",
+  "main": "src/main.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@swc/core": "^1.6.5",
+    "log4js": "^6.9.1",
+    "selenium-webdriver": "^4.22.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.2"
+  }
+}

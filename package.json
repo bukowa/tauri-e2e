@@ -2,8 +2,10 @@
   "name": "tauri-e2e-js",
   "version": "0.0.0",
   "scripts": {
+    "build": "npm run --workspaces --if-present build"
   },
   "workspaces": [
-    "tauri-app"
+    "tauri-app",
+    "tests-e2e-js"
   ]
 }

@@ -1,0 +1,8 @@
+[workspace.package]
+name = "tauri-e2e"
+
+[workspace]
+resolver = "2"
+members = [
+    "tauri-app/src-tauri",
+]

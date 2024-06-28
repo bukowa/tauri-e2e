@@ -1,0 +1,9 @@
+{
+  "name": "tauri-e2e-js",
+  "version": "0.0.0",
+  "scripts": {
+  },
+  "workspaces": [
+    "tauri-app"
+  ]
+}

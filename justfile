@@ -13,7 +13,7 @@ export PATH := \
 
 export PATH_WEBDRIVER_BINARY := env('PATH_WEBDRIVER_BINARY', \
     if os() == 'windows' \
-    {PATH_BUILD_BIN + "/msedgedriver" } \
+    {PATH_BUILD_BIN + "/msedgedriver.exe" } \
     else { shell('which $1 || true', 'WebKitWebDriver')})
 
 exe := if os() == 'windows' { ".exe" } else { "" }
@@ -62,6 +62,14 @@ init:
 tauri *ARGS:
     npm run --workspace=tauri-app tauri -- {{ARGS}}
 
+[group('tauri')]
+[doc('run the tauri app')]
+run-tauri target='release':
+    "{{ if target == 'release' { PATH_TAURI_RELEASE_BINARY} else { PATH_TAURI_DEBUG_BINARY } }}" | xargs
+
+export PATH_TAURI_APP_BINARY := env('PATH_TAURI_APP_BINARY', PATH_TAURI_RELEASE_BINARY)
+export TESTS_LOG_LEVEL := env('TESTS_LOG_LEVEL', 'info')
+
 [group('tests')]
 [doc('run the e2e tests')]
 test-e2e: webdriver-download
@@ -81,6 +89,18 @@ test-e2e: webdriver-download
     node --test --test-force-exit \
          --test-timeout=$NODE_TEST_TIMEOUT \
          tests-e2e-js/dist/main.js
+
+[group('tests')]
+[doc('run the e2e tests using ts-node and swc')]
+test-e2e-fast:
+    #!/bin/bash
+    if [ -n "$TRACE" ]; then set -x; fi
+    set -euov pipefail
+    export TAURI_WEBVIEW_AUTOMATION="true"
+    node \
+      --test --test-force-exit --test-timeout=$NODE_TEST_TIMEOUT \
+      --require ts-node/register \
+      tests-e2e-js
 
 [group('webview')]
 [doc('get microsoftedge version')]
@@ -106,6 +126,12 @@ webdriver-download: init
     set -euo pipefail
 
     version=$(just browser-version)
+    bytes=$(echo $version | wc -c)
+    if [ $bytes -ne 14 ]; then
+        echo "ERROR found incorrect number of bytes in the version number: '$version'"
+        echo "$version"
+        exit 1
+    fi
 
     zip_file=$PATH_BUILD_TEMP/webdriver.zip
     unzip_dir=$PATH_BUILD_TEMP/webdriver

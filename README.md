@@ -15,10 +15,13 @@ In order of priority:
 # State
 - [x] `Windows` support
     - [ ] headless support
+    - [ ] github actions support
 - [x] `Linux` support
     - [x] headless support
+    - [x] github actions support
 - [ ] `Mac` support
     - [ ] headless support
+    - [ ] github actions support
 
 
 ## Note on Headless Execution

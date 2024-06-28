@@ -1,6 +1,8 @@
 name: "Test: UI E2E JS"
 
 on:
+  schedule:
+  - cron: "20 04 * * *"
   push:
     branches:
       - master
@@ -13,6 +15,7 @@ on:
 jobs:
 
   test:
+    timeout-minutes: 5
     runs-on: ubuntu-latest
     name: "Run UI E2E tests"
     env:

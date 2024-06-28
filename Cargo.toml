@@ -1,6 +1,3 @@
-[workspace.package]
-name = "tauri-e2e-rs"
-
 [workspace]
 resolver = "2"
 members = [

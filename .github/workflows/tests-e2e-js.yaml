@@ -1,0 +1,55 @@
+name: "Test: UI E2E JS"
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+
+  test:
+    runs-on: ubuntu-latest
+    name: "Run UI E2E tests"
+    env:
+      # xvfb is slow to start
+      NODE_TEST_TIMEOUT: 90000
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+
+      - name: Setup Just
+        uses: extractions/setup-just@6e1de3cc407de738551abd6c0923bd5ed5608042
+        with:
+          just-version: 1.29.0
+
+      - name: Setup Node
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
+        with:
+          cache: 'npm'
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Setup Rust Cache
+        uses: Swatinem/rust-cache@23bce251a8cd2ffc3c1075eaa2367cf899916d84 # v2
+        with:
+          cache-all-crates: true
+          cache-targets: true
+          cache-directories: |
+            .build
+
+      - name: Install Prerequisites
+        run: |
+          . <(just prerequisites)
+
+      - name: Run UI E2E tests
+        run: xvfb-run -a just test-e2e

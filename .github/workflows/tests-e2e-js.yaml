@@ -12,16 +12,31 @@ on:
   workflow_call:
   workflow_dispatch:
 
+env:
+  TESTS_LOG_LEVEL: debug
+  # xvfb is slow to start
+  NODE_TEST_TIMEOUT: 90000
+  TRACE: 1
+
 jobs:
 
   test:
-    timeout-minutes: 5
-    runs-on: ubuntu-latest
-    name: "Run UI E2E tests"
-    env:
-      # xvfb is slow to start
-      NODE_TEST_TIMEOUT: 90000
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: 'macos-latest' # for Arm based macs (M1 and above).
+            args: '--target aarch64-apple-darwin'
+          - platform: 'macos-latest' # for Intel based macs.
+            args: '--target x86_64-apple-darwin'
+          - platform: 'ubuntu-latest'
+            args: ''
+          - platform: 'windows-latest'
+            args: ''
 
+    timeout-minutes: 15
+    runs-on: ${{ matrix.platform }}
+    name: "Run UI E2E tests"
     steps:
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
@@ -43,6 +58,8 @@ jobs:
           toolchain: stable
           override: true
 
+
+# https://github.com/Swatinem/rust-cache/issues/169
       - name: Setup Rust Cache
         uses: Swatinem/rust-cache@23bce251a8cd2ffc3c1075eaa2367cf899916d84 # v2
         with:
@@ -52,8 +69,23 @@ jobs:
             .build
 
       - name: Install Prerequisites
+        if: matrix.platform == 'ubuntu-latest'
         run: |
           . <(just prerequisites)
 
-      - name: Run UI E2E tests
+      - name: Run UI E2E tests Linux
+        if: matrix.platform == 'ubuntu-latest'
         run: xvfb-run -a just test-e2e
+
+      - name: Run UI E2E tests Windows
+        shell: "bash"
+        if: matrix.platform == 'windows-latest'
+        run: just test-e2e
+
+      - name: Run UI E2E tests MacOS
+        if: matrix.args == '--target aarch64-apple-darwin'
+        run: just test-e2e
+
+      - name: Run UI E2E tests MacOS
+        if: matrix.args == '--target x86_64-apple-darwin'
+        run: just test-e2e

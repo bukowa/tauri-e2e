@@ -102,13 +102,24 @@ test-e2e-fast:
       --require ts-node/register \
       tests-e2e-js
 
+
+
+[group('webview')]
+[doc('get microsoftedge version that is pending update')]
+[windows]
+browser-version-pending-update:
+    REG QUERY \
+    "HKLM\SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients\{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}" \
+    | grep pv | awk '{print $3}'
+
 [group('webview')]
 [doc('get microsoftedge version')]
 [windows]
 browser-version:
-    REG QUERY \
-    "HKLM\SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients\{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}" \
-    | grep pv | awk '{print $3}'
+    #!/bin/bash
+    wmic datafile where \
+      'name="C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"' \
+      get version | tail -n2 | xargs
 
 [group('webview')]
 [doc('get the webdriver url')]

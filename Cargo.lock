@@ -3089,7 +3089,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "tauri-app"
+name = "tauri-app-rs"
 version = "0.0.0"
 dependencies = [
  "serde",

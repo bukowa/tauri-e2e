@@ -1,7 +1,7 @@
 {
   "productName": "tauri-app",
   "version": "0.0.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "app.tauri.dev",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",

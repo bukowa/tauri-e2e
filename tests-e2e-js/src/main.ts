@@ -68,6 +68,11 @@ describe("Tauri E2E tests", async () => {
             driverProcess.kill()
         })
 
+        // todo use something better than a sleep
+        // we can read stdout from msedge
+        // sleep for 10 seconds to allow the driver to start
+        await new Promise((resolve) => setTimeout(resolve, 10000));
+
         logger.info("Creating driver with", {capabilities: capabilities})
         driver = await new Builder()
             .withCapabilities(capabilities)

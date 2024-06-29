@@ -59,6 +59,21 @@ jobs:
         run: |
           . <(just prerequisites)
 
+      - name: Install Prerequisites
+        if: ${{ inputs.os == 'windows-latest' }}
+        shell: "powershell"
+        # https://github.com/actions/runner-images/issues/9538
+        # https://github.com/microsoft/playwright/pull/30009/files
+        # https://github.com/tauri-apps/wry/issues/1268
+        # Evergreen Bootstrapper
+        # The Bootstrapper is a tiny installer that downloads
+        # the Evergreen Runtime matching device architecture
+        # and installs it locally.
+        # https://developer.microsoft.com/en-us/microsoft-edge/webview2/consumer/?form=MA13LH
+        run: |
+          Invoke-WebRequest -Uri 'https://go.microsoft.com/fwlink/p/?LinkId=2124703' -OutFile 'setup.exe'
+          Start-Process -FilePath setup.exe -Verb RunAs -Wait
+
       - name: Linux - Run UI E2E tests
         if: ${{ inputs.os == 'ubuntu-latest' }}
         shell: "bash"
@@ -67,7 +82,10 @@ jobs:
       - name: Windows - Run UI E2E tests
         if: ${{ inputs.os == 'windows-latest' }}
         shell: "bash"
-        run: just test-e2e
+        run: |
+          just browser-version-pending-update
+          just browser-version
+          just test-e2e
 
       - name: MacOS - Run UI E2E tests
         if: ${{ inputs.os == 'macos-latest' }}

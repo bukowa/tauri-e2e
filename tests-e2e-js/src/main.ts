@@ -21,7 +21,11 @@ describe("Tauri E2E tests", async () => {
     test("Send hello world to input", async () => {
         logger.info("Sending hello world to input")
         await driver.findElement({css: 'input[id="greet-input"]'}).sendKeys('Hello World');
+        logger.info("Clicking submit button")
         await driver.findElement({css: 'button[type="Submit"]'}).click();
+        // sleep for 2 seconds to allow the greet message to be displayed
+        logger.info("Waiting 2sec to allow greet message to be displayed")
+        await new Promise((resolve) => setTimeout(resolve, 2000));
         const text = await driver.findElement({css: 'p[id="greet-msg"]'}).getText()
         logger.info("Text found", {text: text})
         assert(text === "Hello, Hello World! You've been greeted from Rust!")

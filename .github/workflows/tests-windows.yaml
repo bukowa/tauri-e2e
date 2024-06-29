@@ -8,6 +8,7 @@ on:
   push:
     branches:
       - master
+  pull_request:
 jobs:
 
   windows-e2e:

@@ -8,6 +8,7 @@ on:
   push:
     branches:
       - master
+  pull_request:
 jobs:
 
   linux-e2e:

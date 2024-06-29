@@ -1,0 +1,71 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "labels": [
+    "dependencies"
+  ],
+  "osvVulnerabilityAlerts": true,
+  "extends": [
+    "config:base"
+  ],
+  "prHourlyLimit": 0,
+  "assignees": [
+    "bukowa"
+  ],
+  "gitIgnoredAuthors": [],
+  "commitMessageAction": "{{{updateType}}} update",
+  "semanticCommits": "enabled",
+  "semanticCommitScope": "",
+  "semanticCommitType": "deps",
+  "commitBodyTable": true,
+  "ignoreDeps": [],
+  "packageRules": [
+    {
+      "matchManagers": [
+        "github-actions"
+      ],
+      "labels": [
+        "ci",
+        "github-actions"
+      ],
+      "pinDigests": true,
+      "semanticCommitType": "ci",
+      "semanticCommitScope": "github-actions"
+    },
+    {
+      "matchDatasources": [
+        "docker"
+      ],
+      "labels": [
+        "deps",
+        "docker"
+      ],
+      "pinDigests": true,
+      "semanticCommitType": "deps",
+      "semanticCommitScope": "docker"
+    },
+    {
+      "matchDatasources": [
+        "crate"
+      ],
+      "labels": [
+        "deps",
+        "rust"
+      ],
+      "pinDigests": true,
+      "semanticCommitType": "deps",
+      "semanticCommitScope": "rust"
+    },
+    {
+      "matchDatasources": [
+        "npm"
+      ],
+      "labels": [
+        "deps",
+        "javascript"
+      ],
+      "pinDigests": true,
+      "semanticCommitType": "deps",
+      "semanticCommitScope": "javascript"
+    }
+  ]
+}

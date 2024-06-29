@@ -31,6 +31,7 @@ export NODE_TEST_TIMEOUT := env('NODE_TEST_TIMEOUT', '20000')
 
 [group('setup')]
 [doc('echo required prerequisites for the project')]
+[linux]
 prerequisites:
     #!/bin/bash
     set -euo pipefail
@@ -168,7 +169,7 @@ webdriver-download: init
 
 [group('webview')]
 [doc('downloads the webdriver')]
-[unix]
+[linux]
 webdriver-download:
     #!/bin/bash
     if [ -n "$TRACE" ]; then set -x; fi

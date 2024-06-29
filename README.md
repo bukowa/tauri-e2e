@@ -1,4 +1,9 @@
 # tauri-e2e v2
+
+[![Linux Tests](https://github.com/bukowa/tauri-e2e/actions/workflows/tests-linux.yaml/badge.svg)](https://github.com/bukowa/tauri-e2e/actions/workflows/tests-linux.yaml)
+[![macOS Tests](https://github.com/bukowa/tauri-e2e/actions/workflows/tests-macos.yaml/badge.svg)](https://github.com/bukowa/tauri-e2e/actions/workflows/tests-macos.yaml)
+[![Windows Tests](https://github.com/bukowa/tauri-e2e/actions/workflows/tests-windows.yaml/badge.svg)](https://github.com/bukowa/tauri-e2e/actions/workflows/tests-windows.yaml)
+
 This project demonstrates how to perform end-to-end testing with `Tauri v2` using `Selenium`.<br>
 
 # Goals

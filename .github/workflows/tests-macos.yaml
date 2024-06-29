@@ -1,0 +1,17 @@
+name: "macOS Tests"
+
+on:
+  workflow_call:
+  workflow_dispatch:
+  schedule:
+    - cron: "20 04 * * *"
+  push:
+    branches:
+      - master
+jobs:
+
+  macos-e2e:
+    name: "Run e2e tests"
+    uses: ./.github/workflows/main.yaml
+    with:
+      os: macos-latest

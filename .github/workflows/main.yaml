@@ -1,0 +1,75 @@
+name: "Test: UI E2E JS"
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      os:
+        description: "Operating system"
+        type: string
+        required: true
+        default: "ubuntu-latest"
+
+env:
+  TRACE: 1                   # justfile set -x
+  TESTS_LOG_LEVEL: debug     # tests-e2e-js
+  NODE_TEST_TIMEOUT: 90000   # xvfb is slow to start
+
+jobs:
+
+  test:
+
+    name: "Run UI E2E tests"
+    timeout-minutes: 15
+    runs-on: ${{ inputs.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+
+      - name: Setup Just
+        uses: extractions/setup-just@6e1de3cc407de738551abd6c0923bd5ed5608042
+        with:
+          just-version: 1.29.0
+
+      - name: Setup Node
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
+        with:
+          node-version: 22.2.0
+          cache: 'npm'
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Setup Rust Cache
+        uses: Swatinem/rust-cache@23bce251a8cd2ffc3c1075eaa2367cf899916d84 # v2
+        # https://github.com/Swatinem/rust-cache/issues/169
+        if: ${{ inputs.os != 'windows-latest' }}
+        with:
+          cache-all-crates: true
+          cache-targets: true
+          cache-directories: |
+            .build
+
+      - name: Install Prerequisites
+        if: ${{ inputs.os == 'ubuntu-latest' }}
+        shell: "bash"
+        run: |
+          . <(just prerequisites)
+
+      - name: Linux - Run UI E2E tests
+        if: ${{ inputs.os == 'ubuntu-latest' }}
+        shell: "bash"
+        run: xvfb-run -a just test-e2e
+
+      - name: Windows - Run UI E2E tests
+        if: ${{ inputs.os == 'windows-latest' }}
+        shell: "bash"
+        run: just test-e2e
+
+      - name: MacOS - Run UI E2E tests
+        if: ${{ inputs.os == 'macos-latest' }}
+        shell: "bash"
+        run: just test-e2e

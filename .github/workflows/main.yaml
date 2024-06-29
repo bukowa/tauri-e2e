@@ -79,29 +79,15 @@ jobs:
         shell: "bash"
         run: xvfb-run -a just test-e2e
 
-      - name: Linux - Run UI E2E tests with ts-node and swc
-        if: ${{ inputs.os == 'ubuntu-latest' }}
-        shell: "bash"
-        run: xvfb-run -a just test-e2e-fast
-
       - name: Windows - Run UI E2E tests
         if: ${{ inputs.os == 'windows-latest' }}
         shell: "bash"
         run: |
+          just browser-version-pending-update
+          just browser-version
           just test-e2e
-
-      - name: Windows - Run UI E2E tests with ts-node and swc
-        if: ${{ inputs.os == 'windows-latest' }}
-        shell: "bash"
-        run: |
-          just test-e2e-fast
 
       - name: MacOS - Run UI E2E tests
         if: ${{ inputs.os == 'macos-latest' }}
         shell: "bash"
         run: just test-e2e
-
-      - name: MacOS - Run UI E2E tests with ts-node and swc
-        if: ${{ inputs.os == 'macos-latest' }}
-        shell: "bash"
-        run: just test-e2e-fast

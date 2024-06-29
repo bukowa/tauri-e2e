@@ -1,5 +1,7 @@
-export _APP_NAME := "tauri-app"
+# Name of the built binary without extension.
+export TAURI_BIN_NAME := "tauri-app"
 
+# The build directories for all filesystem changes.
 export _PATH_ROOT_DIR := absolute_path(".")
 export PATH_BUILD_DIR := _PATH_ROOT_DIR / ".build"
 export PATH_BUILD_BIN := PATH_BUILD_DIR + / "bin"
@@ -19,15 +21,33 @@ export PATH_WEBDRIVER_BINARY := env('PATH_WEBDRIVER_BINARY', \
 exe := if os() == 'windows' { ".exe" } else { "" }
 
 export PATH_TAURI_RELEASE_BINARY := env('PATH_TAURI_RELEASE_BINARY', \
-    absolute_path(".") / "target/release" / _APP_NAME + exe)
+    absolute_path(".") / "target/release" / TAURI_BIN_NAME + exe)
 
 export PATH_TAURI_DEBUG_BINARY := env('PATH_TAURI_DEBUG_BINARY', \
-    absolute_path(".") / "target/debug" / _APP_NAME + exe)
+    absolute_path(".") / "target/debug" / TAURI_BIN_NAME + exe)
 
+export PATH_TAURI_APP_BINARY := env('PATH_TAURI_APP_BINARY', PATH_TAURI_RELEASE_BINARY)
 export NODE_TEST_TIMEOUT := env('NODE_TEST_TIMEOUT', '20000')
+export TESTS_LOG_LEVEL := env('TESTS_LOG_LEVEL', 'info')
 
+# TAURI_WEBVIEW_AUTOMATION — Enables webview automation (Linux Only).
+# https://github.com/tauri-apps/tauri/blob/e7fd7c60d6693944e343fd8d615ec7871f31244b/tooling/cli/ENVIRONMENT_VARIABLES.md
+# https://github.com/tauri-apps/tauri/blob/e7fd7c60d6693944e343fd8d615ec7871f31244b/core/tauri-runtime-wry/src/lib.rs#L4003
+export TAURI_WEBVIEW_AUTOMATION := "true"
+
+[doc('prints all evaluated variables
+- to run just type `just` in the terminal
+$ just
+')]
 @_main:
     just --evaluate
+
+[group('setup')]
+[doc('initialize the build tool')]
+init:
+    mkdir -p $PATH_BUILD_DIR
+    mkdir -p $PATH_BUILD_BIN
+    mkdir -p $PATH_BUILD_TEMP
 
 [group('setup')]
 [doc('echo required prerequisites for the project')]
@@ -51,13 +71,6 @@ prerequisites:
     EOF
     )
 
-[group('setup')]
-[doc('initialize the build tool')]
-init:
-    mkdir -p $PATH_BUILD_DIR
-    mkdir -p $PATH_BUILD_BIN
-    mkdir -p $PATH_BUILD_TEMP
-
 [group('tauri')]
 [doc('run the tauri cli')]
 tauri *ARGS:
@@ -66,10 +79,10 @@ tauri *ARGS:
 [group('tauri')]
 [doc('run the tauri app')]
 run-tauri target='release':
-    "{{ if target == 'release' { PATH_TAURI_RELEASE_BINARY} else { PATH_TAURI_DEBUG_BINARY } }}" | xargs
-
-export PATH_TAURI_APP_BINARY := env('PATH_TAURI_APP_BINARY', PATH_TAURI_RELEASE_BINARY)
-export TESTS_LOG_LEVEL := env('TESTS_LOG_LEVEL', 'info')
+    # use xargs to handle arguments with spaces or special
+    # characters uniformly across Windows and Linux.
+    # this (hopefully) ensures some compatibility in cross-platform scripts.
+    "{{ if target == 'release' { PATH_TAURI_RELEASE_BINARY} else { PATH_TAURI_DEBUG_BINARY } }}" | xargs &
 
 [group('tests')]
 [doc('run the e2e tests')]
@@ -78,14 +91,15 @@ test-e2e: webdriver-download
     if [ -n "$TRACE" ]; then set -x; fi
     set -euov pipefail
 
-    # https://github.com/tauri-apps/tauri/blob/e7fd7c60d6693944e343fd8d615ec7871f31244b/tooling/webdriver/src/webdriver.rs#L48C12-L48C36
+    # TAURI_WEBVIEW_AUTOMATION — Enables webview automation (Linux Only).
+    # https://github.com/tauri-apps/tauri/blob/e7fd7c60d6693944e343fd8d615ec7871f31244b/tooling/cli/ENVIRONMENT_VARIABLES.md
     export TAURI_WEBVIEW_AUTOMATION="true"
 
     npm install
     npm run build
 
     just tauri build --no-bundle
-    test -f $PATH_TAURI_RELEASE_BINARY
+    test -f $PATH_TAURI_APP_BINARY
 
     node --test --test-force-exit \
          --test-timeout=$NODE_TEST_TIMEOUT \
@@ -102,7 +116,6 @@ test-e2e-fast:
       --test --test-force-exit --test-timeout=$NODE_TEST_TIMEOUT \
       --require ts-node/register \
       tests-e2e-js
-
 
 
 [group('webview')]

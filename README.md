@@ -1,8 +1,8 @@
 # tauri-e2e v2
 
+[![Windows Tests](https://github.com/bukowa/tauri-e2e/actions/workflows/tests-windows.yaml/badge.svg)](https://github.com/bukowa/tauri-e2e/actions/workflows/tests-windows.yaml)
 [![Linux Tests](https://github.com/bukowa/tauri-e2e/actions/workflows/tests-linux.yaml/badge.svg)](https://github.com/bukowa/tauri-e2e/actions/workflows/tests-linux.yaml)
 [![macOS Tests](https://github.com/bukowa/tauri-e2e/actions/workflows/tests-macos.yaml/badge.svg)](https://github.com/bukowa/tauri-e2e/actions/workflows/tests-macos.yaml)
-[![Windows Tests](https://github.com/bukowa/tauri-e2e/actions/workflows/tests-windows.yaml/badge.svg)](https://github.com/bukowa/tauri-e2e/actions/workflows/tests-windows.yaml)
 
 This project demonstrates how to perform end-to-end testing with `Tauri v2` using `Selenium`.<br>
 
@@ -19,15 +19,11 @@ In order of priority:
 
 # State
 - [x] `Windows` support
-    - [ ] headless support
-    - [ ] github actions support
+    - [x] github actions support
 - [x] `Linux` support
-    - [x] headless support
     - [x] github actions support
 - [ ] `Mac` support
-    - [ ] headless support
     - [ ] github actions support
-
 
 ## Note on Headless Execution
 In this setup, when we refer to running tests "headlessly," it means executing them without a graphical user interface (GUI) environment. This is achieved by leveraging servers like X11, which provide a virtual display for graphical applications, even in environments where no physical display is available or required.

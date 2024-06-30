@@ -35,7 +35,7 @@ jobs:
             ~/.cargo/git/db/
             target/
             .build/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Setup Just
         uses: extractions/setup-just@6e1de3cc407de738551abd6c0923bd5ed5608042

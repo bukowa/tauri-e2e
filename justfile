@@ -2,16 +2,14 @@
 export TAURI_BIN_NAME := "tauri-app"
 
 # The build directories for all filesystem changes.
-export _PATH_ROOT_DIR := absolute_path(".")
-export PATH_BUILD_DIR := _PATH_ROOT_DIR / ".build"
-export PATH_BUILD_BIN := PATH_BUILD_DIR + / "bin"
-export PATH_BUILD_TEMP := PATH_BUILD_DIR + / "temp"
-export PATH_NODE_MODULES_BIN :=  _PATH_ROOT_DIR + "/node_modules/.bin"
+export _PATH_ROOT_DIR  := absolute_path(".")
+export PATH_BUILD_DIR  := _PATH_ROOT_DIR / ".build"
+export PATH_BUILD_TEMP := PATH_BUILD_DIR / "temp"
+export PATH_BUILD_BIN  := PATH_BUILD_DIR / "bin"
 
 export PATH := \
     env_var('PATH') \
     + ":" + PATH_BUILD_BIN \
-    + ":" + PATH_NODE_MODULES_BIN
 
 export PATH_WEBDRIVER_BINARY := env('PATH_WEBDRIVER_BINARY', \
     if os() == 'windows' \
@@ -20,26 +18,25 @@ export PATH_WEBDRIVER_BINARY := env('PATH_WEBDRIVER_BINARY', \
 
 exe := if os() == 'windows' { ".exe" } else { "" }
 
-export PATH_TAURI_RELEASE_BINARY := env('PATH_TAURI_RELEASE_BINARY', \
-    absolute_path(".") / "target/release" / TAURI_BIN_NAME + exe)
+export PATH_DEBUG_BINARY := env('PATH_DEBUG_BINARY', \
+    absolute_path(".") / "target/debug"     / TAURI_BIN_NAME + exe)
 
-export PATH_TAURI_DEBUG_BINARY := env('PATH_TAURI_DEBUG_BINARY', \
-    absolute_path(".") / "target/debug" / TAURI_BIN_NAME + exe)
+export PATH_RELEASE_BINARY := env('PATH_RELEASE_BINARY', \
+    absolute_path(".") / "target/release"   / TAURI_BIN_NAME + exe)
 
-export PATH_TAURI_APP_BINARY := env('PATH_TAURI_APP_BINARY', PATH_TAURI_RELEASE_BINARY)
-export NODE_TEST_TIMEOUT := env('NODE_TEST_TIMEOUT', '20000')
-export TESTS_LOG_LEVEL := env('TESTS_LOG_LEVEL', 'info')
+export PATH_TEST_BINARY := env('PATH_TEST_BINARY', \
+    PATH_RELEASE_BINARY)
+
+export E2E_LOG_LEVEL    := env('E2E_LOG_LEVEL',    'info')
+export E2E_NODE_TIMEOUT := env('E2E_NODE_TIMEOUT', '20000')
 
 # TAURI_WEBVIEW_AUTOMATION — Enables webview automation (Linux Only).
 # https://github.com/tauri-apps/tauri/blob/e7fd7c60d6693944e343fd8d615ec7871f31244b/tooling/cli/ENVIRONMENT_VARIABLES.md
 # https://github.com/tauri-apps/tauri/blob/e7fd7c60d6693944e343fd8d615ec7871f31244b/core/tauri-runtime-wry/src/lib.rs#L4003
 export TAURI_WEBVIEW_AUTOMATION := "true"
 
-[doc('prints all evaluated variables
-- to run just type `just` in the terminal
-$ just
-')]
-@_main:
+[doc('prints all evaluated variables')]
+@_default:
     just --evaluate
 
 [group('setup')]
@@ -82,7 +79,7 @@ run-tauri target='release':
     # use xargs to handle arguments with spaces or special
     # characters uniformly across Windows and Linux.
     # this (hopefully) ensures some compatibility in cross-platform scripts.
-    "{{ if target == 'release' { PATH_TAURI_RELEASE_BINARY} else { PATH_TAURI_DEBUG_BINARY } }}" | xargs &
+    "{{ if target == 'release' { PATH_RELEASE_BINARY} else { PATH_DEBUG_BINARY } }}" | xargs &
 
 [group('tests')]
 [doc('run the e2e tests')]
@@ -91,18 +88,14 @@ test-e2e: webdriver-download
     if [ -n "$JUSTFILE_TRACE" ]; then set -x; fi
     set -euov pipefail
 
-    # TAURI_WEBVIEW_AUTOMATION — Enables webview automation (Linux Only).
-    # https://github.com/tauri-apps/tauri/blob/e7fd7c60d6693944e343fd8d615ec7871f31244b/tooling/cli/ENVIRONMENT_VARIABLES.md
-    export TAURI_WEBVIEW_AUTOMATION="true"
-
     npm install
     npm run build
 
     just tauri build --no-bundle
-    test -f $PATH_TAURI_APP_BINARY
+    test -f $PATH_TEST_BINARY
 
     node --test --test-force-exit \
-         --test-timeout=$NODE_TEST_TIMEOUT \
+         --test-timeout=$E2E_NODE_TIMEOUT \
          tests-e2e-js/dist/main.js
 
 [group('tests')]
@@ -111,23 +104,13 @@ test-e2e-fast:
     #!/bin/bash
     if [ -n "$JUSTFILE_TRACE" ]; then set -x; fi
     set -euov pipefail
-    export TAURI_WEBVIEW_AUTOMATION="true"
     node \
-      --test --test-force-exit --test-timeout=$NODE_TEST_TIMEOUT \
+      --test --test-force-exit --test-timeout=$E2E_NODE_TIMEOUT \
       --require ts-node/register \
       tests-e2e-js
 
-
 [group('webview')]
-[doc('get microsoftedge version that is pending update')]
-[windows]
-browser-version-pending-update:
-    REG QUERY \
-    "HKLM\SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients\{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}" \
-    | grep pv | awk '{print $3}'
-
-[group('webview')]
-[doc('get microsoftedge version')]
+[doc('get microsoftedge installed version')]
 [windows]
 browser-version:
     #!/bin/bash
@@ -136,14 +119,14 @@ browser-version:
       get version | tail -n2 | xargs
 
 [group('webview')]
-[doc('get the webdriver url')]
+[doc('get the microsoftedge webdriver url')]
 [windows]
 webdriver-url:
     #!/bin/bash
     echo "https://msedgedriver.azureedge.net/$(just browser-version)/edgedriver_win64.zip"
 
 [group('webview')]
-[doc('downloads the webdriver')]
+[doc('downloads the microsoftedge webdriver')]
 [windows]
 webdriver-download: init
     #!/bin/bash
@@ -201,3 +184,11 @@ webdriver-download:
           echo "$error_message"
           exit 1
     fi
+
+[group('webview')]
+[doc('get microsoftedge versions pending update')]
+[windows]
+browser-version-pending-update:
+    REG QUERY \
+    "HKLM\SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients\{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}" \
+    | grep pv | awk '{print $3}'

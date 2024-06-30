@@ -39,7 +39,7 @@ describe("Tauri E2E tests", async () => {
 
                 capabilities.setBrowserName('webview2');
                 capabilities.set('ms:edgeOptions', {
-                    binary: setup.PATH_TAURI_APP_BINARY,
+                    binary: setup.PATH_TEST_BINARY,
                     webviewOptions: {},
                     args: []
                 })
@@ -51,7 +51,7 @@ describe("Tauri E2E tests", async () => {
 
                 capabilities.setBrowserName('wry');
                 capabilities.set('webkitgtk:browserOptions', {
-                    binary: setup.PATH_TAURI_APP_BINARY,
+                    binary: setup.PATH_TEST_BINARY,
                     args: [
                         '--automation'
                     ]

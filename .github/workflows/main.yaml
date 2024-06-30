@@ -12,8 +12,8 @@ on:
 
 env:
   JUSTFILE_TRACE: 1                   # justfile set -x
-  TESTS_LOG_LEVEL: debug     # tests-e2e-js
-  NODE_TEST_TIMEOUT: 90000   # xvfb is slow to start
+  E2E_LOG_LEVEL: debug     # tests-e2e-js
+  E2E_NODE_TIMEOUT: 90000   # xvfb is slow to start
 
 jobs:
 

@@ -15,7 +15,7 @@ function getWebDriverUrl() {
 
 function spawnWebKitDriver() {
     // https://trac.webkit.org/wiki/WebKitGTK/Debugging#Loggingsupport
-    if (setup.TESTS_LOG_LEVEL === 'debug') {
+    if (setup.E2E_LOG_LEVEL === 'debug') {
         // `spawn` function default == process.env
         // https://nodejs.org/api/child_process.html#child_processspawncommand-args-options
         process.env.WEBKIT_DEBUG = "all"

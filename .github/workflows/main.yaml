@@ -35,6 +35,7 @@ jobs:
             ~/.cargo/git/db/
             target/
             .build/
+            setup.exe
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Setup Just

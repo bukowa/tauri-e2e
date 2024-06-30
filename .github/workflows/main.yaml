@@ -26,6 +26,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+            .build/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
       - name: Setup Just
         uses: extractions/setup-just@6e1de3cc407de738551abd6c0923bd5ed5608042
         with:
@@ -42,16 +53,6 @@ jobs:
         with:
           toolchain: stable
           override: true
-
-      - name: Setup Rust Cache
-        uses: Swatinem/rust-cache@23bce251a8cd2ffc3c1075eaa2367cf899916d84 # v2
-        # https://github.com/Swatinem/rust-cache/issues/169
-        if: ${{ inputs.os != 'windows-latest' }}
-        with:
-          cache-all-crates: true
-          cache-targets: true
-          cache-directories: |
-            .build
 
       - name: Install Prerequisites
         if: ${{ inputs.os == 'ubuntu-latest' }}

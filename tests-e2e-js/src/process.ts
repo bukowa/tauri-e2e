@@ -4,8 +4,8 @@ import {spawn} from "node:child_process";
 import {SpawnOptionsWithStdioTuple} from "child_process";
 import * as log4js from "log4js";
 
-const processSpawnOptions: SpawnOptionsWithStdioTuple<null, 'overlapped', 'overlapped'> = {
-    stdio: [null, 'overlapped', 'overlapped'],
+const processSpawnOptions: SpawnOptionsWithStdioTuple<null, 'pipe', 'pipe'> = {
+    stdio: [null, 'pipe', 'pipe'],
     detached: false,
 };
 

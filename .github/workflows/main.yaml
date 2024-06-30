@@ -11,7 +11,7 @@ on:
         default: "ubuntu-latest"
 
 env:
-  TRACE: 1                   # justfile set -x
+  JUSTFILE_TRACE: 1                   # justfile set -x
   TESTS_LOG_LEVEL: debug     # tests-e2e-js
   NODE_TEST_TIMEOUT: 90000   # xvfb is slow to start
 

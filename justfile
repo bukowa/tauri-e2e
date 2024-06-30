@@ -88,7 +88,7 @@ run-tauri target='release':
 [doc('run the e2e tests')]
 test-e2e: webdriver-download
     #!/bin/bash
-    if [ -n "$TRACE" ]; then set -x; fi
+    if [ -n "$JUSTFILE_TRACE" ]; then set -x; fi
     set -euov pipefail
 
     # TAURI_WEBVIEW_AUTOMATION — Enables webview automation (Linux Only).
@@ -109,7 +109,7 @@ test-e2e: webdriver-download
 [doc('run the e2e tests using ts-node and swc')]
 test-e2e-fast:
     #!/bin/bash
-    if [ -n "$TRACE" ]; then set -x; fi
+    if [ -n "$JUSTFILE_TRACE" ]; then set -x; fi
     set -euov pipefail
     export TAURI_WEBVIEW_AUTOMATION="true"
     node \
@@ -147,7 +147,7 @@ webdriver-url:
 [windows]
 webdriver-download: init
     #!/bin/bash
-    if [ -n "$TRACE" ]; then set -x; fi
+    if [ -n "$JUSTFILE_TRACE" ]; then set -x; fi
     set -euo pipefail
 
     version=$(just browser-version)
@@ -185,7 +185,7 @@ webdriver-download: init
 [linux]
 webdriver-download:
     #!/bin/bash
-    if [ -n "$TRACE" ]; then set -x; fi
+    if [ -n "$JUSTFILE_TRACE" ]; then set -x; fi
     set -euo pipefail
     if [ -n "$PATH_WEBDRIVER_BINARY" ] && [ -f $PATH_WEBDRIVER_BINARY ]; then
         echo "Webdriver found at: '$PATH_WEBDRIVER_BINARY'"

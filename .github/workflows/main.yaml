@@ -14,9 +14,6 @@ env:
   TRACE: 1                   # justfile set -x
   TESTS_LOG_LEVEL: debug     # tests-e2e-js
   NODE_TEST_TIMEOUT: 90000   # xvfb is slow to start
-  # https://github.com/Mozilla-Actions/sccache-action?tab=readme-ov-file#rust-code
-  SCCACHE_GHA_ENABLED: "true"
-  RUSTC_WRAPPER: "sccache"
 
 jobs:
 
@@ -39,9 +36,6 @@ jobs:
             target/
             .build/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-
-      - name: Run sccache-cache
-        uses: mozilla-actions/sccache-action@v0.0.5
 
       - name: Setup Just
         uses: extractions/setup-just@6e1de3cc407de738551abd6c0923bd5ed5608042

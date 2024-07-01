@@ -3,67 +3,6 @@ import {ChildProcess, spawn} from "node:child_process";
 import {SpawnOptionsWithStdioTuple} from "child_process";
 import {Capabilities, WebDriver} from "selenium-webdriver";
 
-
-//**
-// * Type representing the logger methods.
-// */
-type ConfigLogger = {
-    info: (message: string, ...args: any[]) => void;
-    debug: (message: string, ...args: any[]) => void;
-    error: (message: string, ...args: any[]) => void;
-    warn: (message: string, ...args: any[]) => void;
-    level?: string | any;
-}
-
-/**
- * Logger for application configuration.
- * Users can override these methods.
- */
-let configLogger: ConfigLogger = {
-    info: (message: string, ...args: any[]) => {
-    },
-    debug: (message: string, ...args: any[]) => {
-    },
-    error: (message: string, ...args: any[]) => {
-    },
-    warn: (message: string, ...args: any[]) => {
-    },
-    level: 'info',
-};
-
-// **
-// * Set the logger for the configuration.
-// */
-function setConfigLogger(logger: ConfigLogger) {
-    configLogger = logger
-}
-
-//**
-// * Type representing the logger methods.
-// */
-type DriverLogger = {
-    stdout: (message: string, ...args: any[]) => void;
-    stderr: (message: string, ...args: any[]) => void;
-}
-
-/**
- * Logger for the WebDriver process output.
- * Users can override these methods.
- */
-let driverLogger: DriverLogger = {
-    stdout: (message: string, ...args: any[]) => {
-    },
-    stderr: (message: string, ...args: any[]) => {
-    },
-};
-
-// **
-// * Set the logger for the WebDriver process output.
-// */
-function setDriverLogger(logger: DriverLogger) {
-    driverLogger = logger
-}
-
 /**
  * Constant representing the default driver type based on the operating system.
  */
@@ -326,6 +265,63 @@ async function cleanup(driver: WebDriver, webDriver: ChildProcess) {
         process.kill(-webDriver.pid);
     }
 }
+
+//**
+// * Type representing the logger methods.
+// */
+type DriverLogger = {
+    stdout: (message: string, ...args: any[]) => void;
+    stderr: (message: string, ...args: any[]) => void;
+}
+
+//**
+// * Type representing the logger methods.
+// */
+type ConfigLogger = {
+    info: (message: string, ...args: any[]) => void;
+    debug: (message: string, ...args: any[]) => void;
+    error: (message: string, ...args: any[]) => void;
+    warn: (message: string, ...args: any[]) => void;
+    level?: string | any;
+}
+
+// **
+// * Set the logger for the WebDriver process output.
+// */
+function setDriverLogger(logger: DriverLogger) {
+    driverLogger = logger
+}
+
+// **
+// * Set the logger for the configuration.
+// */
+function setConfigLogger(logger: ConfigLogger) {
+    configLogger = logger
+}
+
+let noop = () => {
+};
+
+/**
+ * Logger for application configuration.
+ * Users can override these methods.
+ */
+let configLogger: ConfigLogger = {
+    info: (message: string, ...args: any[]) => noop,
+    debug: (message: string, ...args: any[]) => noop,
+    error: (message: string, ...args: any[]) => noop,
+    warn: (message: string, ...args: any[]) => noop,
+    level: 'info',
+};
+
+/**
+ * Logger for the WebDriver process output.
+ * Users can override these methods.
+ */
+let driverLogger: DriverLogger = {
+    stdout: (message: string, ...args: any[]) => noop,
+    stderr: (message: string, ...args: any[]) => noop,
+};
 
 export {
     setConfigLogger,

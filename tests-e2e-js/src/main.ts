@@ -57,11 +57,22 @@ describe("Tauri E2E tests", async () => {
         logger.info("WebDriver session cleaned up")
     });
 
+
+
     test("Send hello world to input", async () => {
-        await driver.findElement({css: 'input[id="greet-input"]'}).sendKeys('Hello World');
-        await driver.findElement({css: 'button[type="Submit"]'}).click();
-        await driver.wait(until.elementLocated({css: 'p[id="greet-msg"]'}), setup.TESTS_TIMEOUT);
-        const text = await driver.findElement({css: 'p[id="greet-msg"]'}).getText()
-        assert(text === "Hello, Hello World! You've been greeted from Rust!")
+        let input = 'input[id="greet-input"]'
+        let button = 'button[type="Submit"]'
+        let text = 'p[id="greet-msg"]'
+
+        await driver.wait(until.elementLocated({css: input}));
+        await driver.findElement({css: input}).sendKeys('Hello World');
+
+        await driver.wait(until.elementLocated({css: button}));
+        await driver.findElement({css: button}).click();
+
+        await driver.wait(until.elementLocated({css: text}), setup.TESTS_TIMEOUT);
+        const helloWorldText = await driver.findElement({css: text}).getText()
+
+        assert(helloWorldText === "Hello, Hello World! You've been greeted from Rust!")
     });
 });

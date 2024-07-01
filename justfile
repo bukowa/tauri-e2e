@@ -100,13 +100,14 @@ test-e2e: webdriver-download
 
 [group('tests')]
 [doc('run the e2e tests using ts-node and swc')]
-test-e2e-fast:
+test-e2e-fast *ARGS="":
     #!/bin/bash
     if [ -n "$JUSTFILE_TRACE" ]; then set -x; fi
     set -euov pipefail
     node \
       --test --test-force-exit --test-timeout=$E2E_NODE_TIMEOUT \
       --require ts-node/register \
+      {{ARGS}} \
       tests-e2e-js
 
 [group('webview')]

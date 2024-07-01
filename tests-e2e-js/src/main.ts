@@ -1,97 +1,67 @@
 import {Builder, Capabilities, until, WebDriver} from "selenium-webdriver";
-import {logger} from "./logger"
-import {getWebDriverUrl, logProcessOutput, spawnEdgeDriver, spawnWebKitDriver} from "./process";
-import {before, describe, test} from "node:test";
-import * as os from "node:os";
-import * as setup from "./setup"
+import {afterEach, beforeEach, describe, it, test} from "node:test";
 import {ChildProcess} from "node:child_process";
 import assert from "node:assert";
+import {logger} from "./logger"
+import * as setup from "./setup"
+import * as webdriver from "./webdriver"
 
 logger.debug(setup)
 
-
 describe("Tauri E2E tests", async () => {
+
     let driver: WebDriver;
-    let driverProcess: ChildProcess;
+    let webDriver: ChildProcess;
+    let capabilities: Capabilities;
 
-    test("should log hello world", async () => {
-        logger.info("Hello world")
-    })
+    beforeEach(async () => {
 
-    test("Send hello world to input", async () => {
-        logger.info("Sending hello world to input")
-        await driver.findElement({css: 'input[id="greet-input"]'}).sendKeys('Hello World');
-        logger.info("Clicking submit button")
-        await driver.findElement({css: 'button[type="Submit"]'}).click();
-        // sleep for 2 seconds to allow the greet message to be displayed
-        logger.info("Waiting 2sec to allow greet message to be displayed")
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        const text = await driver.findElement({css: 'p[id="greet-msg"]'}).getText()
-        logger.info("Text found", {text: text})
-        assert(text === "Hello, Hello World! You've been greeted from Rust!")
-    });
-
-    before(async () => {
-        const capabilities = new Capabilities();
-
-        switch (os.platform()) {
-            case 'win32':
-
-                capabilities.setBrowserName('webview2');
-                capabilities.set('ms:edgeOptions', {
-                    binary: setup.PATH_TEST_BINARY,
-                    webviewOptions: {},
-                    args: []
-                })
-                logger.info("Starting Edge driver")
-                driverProcess = spawnEdgeDriver()
-
-                break;
-            default:
-
-                capabilities.setBrowserName('wry');
-                capabilities.set('webkitgtk:browserOptions', {
-                    binary: setup.PATH_TEST_BINARY,
-                    args: [
-                        '--automation'
-                    ]
-                })
-                logger.info("Starting WebKit driver")
-                driverProcess = spawnWebKitDriver()
-
-                break;
-        }
-
-        logProcessOutput(driverProcess, 'driverProcess')
-        driverProcess.on('exit', (code) => {
-            logger.info(`WebDriver exited with code: ${code}`);
-        });
-
-        process.on('exit', (code) => {
-            logger.info(`Exit: ${code}, killing webDriverProcess`)
-            driverProcess.kill()
+        // Start the WebDriver process
+        webDriver = webdriver.spawnWebDriver({
+            driverPath: setup.PATH_WEBDRIVER_BINARY,
+            spawnArgsConfigurators: [
+                webdriver.configureHostArgs(setup.E2E_WEBDRIVER_HOST),
+                webdriver.configurePortArgs(setup.E2E_WEBDRIVER_PORT),
+                webdriver.configureLoggingArgs(setup.E2E_WEBDRIVER_LOG_LEVEL)
+            ]
         })
 
-        // todo use something better than a sleep
-        // we can read stdout from msedge
-        // sleep for 10 seconds to allow the driver to start
-        await new Promise((resolve) => setTimeout(resolve, 10000));
+        // Configure the WebDriver capabilities
+        capabilities = webdriver.configureCapabilities({
+            binary: setup.PATH_TEST_BINARY,
+        })
 
-        logger.info("Creating driver with", {capabilities: capabilities})
+        // Create the WebDriver session
+        logger.info("Creating WebDriver session", {
+            caps: webdriver.serializeCapabilities(capabilities)
+        })
+
         driver = await new Builder()
+            .usingServer(setup.E2E_WEBDRIVER_URL)
             .withCapabilities(capabilities)
-            .usingServer(getWebDriverUrl())
             .build()
 
-        logger.info("Driver created", {driver: driver})
-
-        process.on('exit', async (code) => {
-            logger.info(`Exit: ${code}, killing driver`)
-            await driver.quit()
+        driver.getCapabilities().then(caps => {
+            logger.debug("WebDriver session created", {
+                caps: webdriver.serializeCapabilities(caps)
+            })
         });
 
-        logger.info("Waiting for body element")
+        // Wait for the body element to be present
         await driver.wait(until.elementLocated({css: 'body'}), setup.TESTS_TIMEOUT);
-        logger.info("Body element found")
+    });
+
+    afterEach(async () => {
+        logger.info("Cleaning up WebDriver session")
+        await webdriver.cleanup(driver, webDriver)
+        logger.info("WebDriver session cleaned up")
+    });
+
+    test("Send hello world to input", async () => {
+        await driver.findElement({css: 'input[id="greet-input"]'}).sendKeys('Hello World');
+        await driver.findElement({css: 'button[type="Submit"]'}).click();
+        await driver.wait(until.elementLocated({css: 'p[id="greet-msg"]'}), setup.TESTS_TIMEOUT);
+        const text = await driver.findElement({css: 'p[id="greet-msg"]'}).getText()
+        assert(text === "Hello, Hello World! You've been greeted from Rust!")
     });
 });

@@ -287,11 +287,11 @@ function spawnWebDriver(opts: {
 
     webDriver.stdout?.on('data', (data) => {
         // @ts-ignore
-        driverLogger.stdout('', {data: data.toString()});
+        driverLogger.stdout(data.toString());
     });
 
     webDriver.stderr?.on('data', (data) => {
-        driverLogger.stderr('', {data: data.toString()});
+        driverLogger.stderr(data.toString());
     });
 
     webDriver.on('close', (code) => {

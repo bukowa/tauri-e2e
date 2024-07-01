@@ -6,6 +6,12 @@
 
 This project demonstrates how to perform end-to-end testing with `Tauri v2` using `Selenium`.<br>
 
+It can also easily be integrated into your existing `Tauri` project to automate testing and ensure the quality of your application across different platforms.
+
+Each webdriver has its own differences between platforms. This project aims to provide a unified way to run e2e tests.
+In the [webdriver.ts](./tests-e2e/src/webdriver.ts) file, you can see how the webdriver is initialized based on the platform.
+Copying this file into your project should be enough to run e2e tests on your project.
+
 # Goals
 In order of priority:
 

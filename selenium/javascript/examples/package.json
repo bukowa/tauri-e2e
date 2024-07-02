@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@tauri-e2e/selenium": "file:../",
+    "selenium-webdriver": "^4.22.0"
+  },
+  "type": "module"
+}

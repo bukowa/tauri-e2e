@@ -1,0 +1,13 @@
+mod javascript './javascript/justfile'
+
+test:
+    just javascript::test
+
+build:
+    just javascript::build
+
+docs:
+    just javascript::docs
+
+clean:
+    just javascript::clean

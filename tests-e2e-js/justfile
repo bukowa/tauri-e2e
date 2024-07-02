@@ -1,0 +1,30 @@
+mod selenium '../selenium/justfile'
+
+deps:
+    npm i --prefer-offline --no-audit --progress=false
+
+build: deps
+    just selenium::build
+    npm run build
+
+test: build _test
+
+
+test-cmd := "node --test --test-force-exit ./dist/main.js"
+
+[windows]
+_test:
+    {{test-cmd}}
+
+[linux]
+_test:
+    xvfb-run -a {{test-cmd}}
+
+[macos]
+_test:
+    {{test-cmd}}
+
+clean:
+    rm -rf ./node_modules
+    rm -rf ./dist
+    rm -fr .tsimp

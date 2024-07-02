@@ -1,19 +1,19 @@
 {
   "name": "tests-e2-js",
   "version": "0.0.0",
+  "type": "module",
   "main": "src/main.ts",
   "scripts": {
     "build": "tsc"
   },
   "dependencies": {
-    "log4js": "^6.9.1",
-    "selenium-webdriver": "^4.22.0"
+    "@tauri-e2e/selenium": "0.0.0",
+    "log4js": "^6.9.1"
   },
   "devDependencies": {
-    "@swc/core": "^1.6.6",
+    "tsimp": "^2.0.11",
     "@types/node": "^20.14.9",
     "@types/selenium-webdriver": "^4.1.24",
-    "ts-node": "^10.9.2",
     "typescript": "^5.5.2"
   }
 }

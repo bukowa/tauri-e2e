@@ -1,0 +1,13 @@
+import './build.just'
+mod examples './examples/justfile'
+
+test: build
+    just examples::run
+
+docs:
+    npm run docs
+
+clean:
+    just examples::clean
+    rm -fr node_modules
+    rm -fr dist

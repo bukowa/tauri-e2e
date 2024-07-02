@@ -1,0 +1,24 @@
+mod selenium__javascript '../build.just'
+
+run: deps _run
+
+deps:
+    just selenium__javascript::build
+
+clean:
+    rm -fr node_modules
+
+
+test-cmd := 'node ./quick-start.js'
+
+[linux]
+_run:
+    xvfb-run -a {{test-cmd}}
+
+[windows]
+_run:
+    {{test-cmd}}
+
+[macos]
+_run:
+    {{test-cmd}}

@@ -3,3 +3,6 @@ target
 node_modules
 dist
 .build
+.tsimp
+*.tsbuildinfo
+.deps.once

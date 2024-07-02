@@ -1,0 +1,27 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": [
+    "src/*.ts"
+  ],
+  "projectDocuments": [
+    "examples/**/*.md"
+  ],
+  "readme": "README.md",
+  "out": "docs",
+  "gitRevision": "master",
+  "excludeInternal": true,
+  "cleanOutputDir": true,
+  "groupOrder": [
+    "Documents",
+    "Namespaces",
+    "Modules",
+    "*"
+  ],
+  "sort": [
+  ],
+  "categoryOrder": [
+    "Examples",
+    "*"
+  ],
+  "sortEntryPoints": true
+}

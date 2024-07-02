@@ -1,0 +1,55 @@
+{
+  "name": "@tauri-e2e/selenium",
+  "version": "0.0.0",
+  "main": "./dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "convert-examples": "node ./scripts/examples-to-md.js ./examples",
+    "docs": "npm run convert-examples && typedoc --tsconfig tsconfig.json"
+  },
+  "dependencies": {
+    "find-cache-dir": "^5.0.0",
+    "selenium-webdriver": "^4.22.0"
+  },
+  "exports": {
+    ".": {
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./constants": {
+      "default": "./dist/constants.js",
+      "types": "./dist/constants.d.ts"
+    },
+    "./logger": {
+      "default": "./dist/logger.js",
+      "types": "./dist/logger.d.ts"
+    },
+    "./webkitgtk2": {
+      "default": "./dist/webkitgtk2/index.js",
+      "types": "./dist/webkitgtk2/index.d.ts"
+    },
+    "./webview2": {
+      "default": "./dist/webview2/index.js",
+      "types": "./dist/webview2/index.d.ts"
+    },
+    "./wry": {
+      "default": "./dist/wry/index.js",
+      "types": "./dist/wry/index.d.ts"
+    },
+    "./install": {
+      "default": "./dist/install/index.js",
+      "types": "./dist/install/index.d.ts"
+    },
+    "./launch": {
+      "default": "./dist/launch/index.js",
+      "types": "./dist/launch/index.d.ts"
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "@types/selenium-webdriver": "^4.1.24",
+    "typedoc": "^0.26.3",
+    "typescript": "^5.5.2"
+  }
+}

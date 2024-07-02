@@ -14,6 +14,7 @@ env:
   JUSTFILE_TRACE: 1                   # justfile set -x
   E2E_LOG_LEVEL: debug     # tests-e2e-js
   E2E_NODE_TIMEOUT: 90000   # xvfb is slow to start
+  JUST_UNSTABLE: 1
 
 jobs:
 
@@ -34,8 +35,6 @@ jobs:
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
             target/
-            .build/
-            setup.exe
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Setup Just
@@ -60,12 +59,6 @@ jobs:
           override: true
 
       - name: Install Prerequisites
-        if: ${{ inputs.os == 'ubuntu-latest' }}
-        shell: "bash"
-        run: |
-          . <(just prerequisites)
-
-      - name: Install Prerequisites
         if: ${{ inputs.os == 'windows-latest' }}
         shell: "powershell"
         # https://github.com/actions/runner-images/issues/9538
@@ -83,17 +76,16 @@ jobs:
       - name: Linux - Run UI E2E tests
         if: ${{ inputs.os == 'ubuntu-latest' }}
         shell: "bash"
-        run: xvfb-run -a just test-e2e
+        run: |
+          just test
 
       - name: Windows - Run UI E2E tests
         if: ${{ inputs.os == 'windows-latest' }}
         shell: "bash"
         run: |
-          just browser-version-pending-update
-          just browser-version
-          just test-e2e
+          just test
 
       - name: MacOS - Run UI E2E tests
         if: ${{ inputs.os == 'macos-latest' }}
         shell: "bash"
-        run: just test-e2e
+        run: just test

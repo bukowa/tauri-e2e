@@ -1,78 +1,61 @@
 import assert from "node:assert";
 import {ChildProcess} from "node:child_process";
 import {afterEach, beforeEach, describe, test} from "node:test";
-import {Builder, Capabilities, until, WebDriver} from "selenium-webdriver";
+import {until, WebDriver} from "selenium-webdriver";
+import * as e2e from "@tauri-e2e/selenium";
+import {default as log4js} from "log4js";
 
-import {logger} from "./logger"
-import * as setup from "./setup"
-import * as webdriver from "./webdriver"
+let logger = log4js.getLogger();
+logger.level = "debug";
 
-logger.debug(setup)
+process.env.TAURI_WEBDRIVER_LOGLEVEL = "debug"
+process.env.TAURI_WEBDRIVER_BINARY = await e2e.install.PlatformDriver();
+process.env.TAURI_SELENIUM_BINARY = "../target/release/tauri-app.exe"
+process.env.SELENIUM_REMOTE_URL = "http://127.0.0.1:6655"
+
+//@ts-ignore fuck you javascript
+e2e.setLogger(logger)
 
 describe("Tauri E2E tests", async () => {
 
     let driver: WebDriver;
     let webDriver: ChildProcess;
-    let capabilities: Capabilities;
 
     beforeEach(async () => {
-
-        // Start the WebDriver process
-        webDriver = webdriver.spawnWebDriver({
-            driverPath: setup.E2E_WEBDRIVER_BINARY,
-            spawnArgsConfigurators: [
-                webdriver.configureHostArgs(setup.E2E_WEBDRIVER_HOST),
-                webdriver.configurePortArgs(setup.E2E_WEBDRIVER_PORT),
-                webdriver.configureLoggingArgs(setup.E2E_LOG_LEVEL)
-            ]
-        })
-
-        // Configure the WebDriver capabilities
-        capabilities = webdriver.configureCapabilities({
-            binary: setup.E2E_TAURI_BINARY,
-        })
-
-        // Create the WebDriver session
-        logger.info("Creating WebDriver session", {
-            caps: webdriver.serializeCapabilities(capabilities)
-        })
-
-        driver = await new Builder()
-            .usingServer(setup.E2E_WEBDRIVER_URL)
-            .withCapabilities(capabilities)
-            .build()
-
-        driver.getCapabilities().then(caps => {
-            logger.debug("WebDriver session created", {
-                caps: webdriver.serializeCapabilities(caps)
-            })
-        });
-
+        // Spawn WebDriver process.
+        webDriver = await e2e.launch.spawnWebDriver()
+        // Create driver session.
+        driver = new e2e.selenium.Builder().build();
         // Wait for the body element to be present
         await driver.wait(until.elementLocated({css: 'body'}));
     });
 
     afterEach(async () => {
-        logger.info("Cleaning up WebDriver session")
-        await webdriver.cleanup(driver, webDriver)
-        logger.info("WebDriver session cleaned up")
+        await e2e.selenium.cleanupSession(driver)
+        e2e.launch.killWebDriver(webDriver)
     });
 
+    let test_ = async() => {
+        return test("Send hello world to input", async()=>{
+            let input = 'input[id="greet-input"]'
+            let button = 'button[type="Submit"]'
+            let text = 'p[id="greet-msg"]'
 
-    test("Send hello world to input", async () => {
-        let input = 'input[id="greet-input"]'
-        let button = 'button[type="Submit"]'
-        let text = 'p[id="greet-msg"]'
+            await driver.wait(until.elementLocated({css: input}));
+            await driver.findElement({css: input}).sendKeys('Hello World');
 
-        await driver.wait(until.elementLocated({css: input}));
-        await driver.findElement({css: input}).sendKeys('Hello World');
+            await driver.wait(until.elementLocated({css: button}));
+            await driver.findElement({css: button}).click();
 
-        await driver.wait(until.elementLocated({css: button}));
-        await driver.findElement({css: button}).click();
+            await driver.wait(until.elementLocated({css: text}));
+            const helloWorldText = await driver.findElement({css: text}).getText()
 
-        await driver.wait(until.elementLocated({css: text}));
-        const helloWorldText = await driver.findElement({css: text}).getText()
+            assert(helloWorldText === "Hello, Hello World! You've been greeted from Rust!")
+        })
+    }
 
-        assert(helloWorldText === "Hello, Hello World! You've been greeted from Rust!")
-    });
+    for (let i = 0; i < 10; i++) {
+        await test_()
+    }
+
 });

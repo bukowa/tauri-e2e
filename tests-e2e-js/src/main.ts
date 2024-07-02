@@ -1,11 +1,11 @@
-import {Builder, Capabilities, until, WebDriver} from "selenium-webdriver";
-import {afterEach, beforeEach, describe, it, test} from "node:test";
-import {ChildProcess} from "node:child_process";
 import assert from "node:assert";
+import {ChildProcess} from "node:child_process";
+import {afterEach, beforeEach, describe, test} from "node:test";
+import {Builder, Capabilities, until, WebDriver} from "selenium-webdriver";
+
 import {logger} from "./logger"
 import * as setup from "./setup"
 import * as webdriver from "./webdriver"
-import {E2E_LOG_LEVEL} from "./setup";
 
 logger.debug(setup)
 

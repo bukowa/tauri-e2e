@@ -18,7 +18,7 @@ describe("Tauri E2E tests", async () => {
 
         // Start the WebDriver process
         webDriver = webdriver.spawnWebDriver({
-            driverPath: setup.PATH_WEBDRIVER_BINARY,
+            driverPath: setup.E2E_WEBDRIVER_BINARY,
             spawnArgsConfigurators: [
                 webdriver.configureHostArgs(setup.E2E_WEBDRIVER_HOST),
                 webdriver.configurePortArgs(setup.E2E_WEBDRIVER_PORT),

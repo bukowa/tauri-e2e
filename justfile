@@ -11,7 +11,7 @@ export PATH := \
     env_var('PATH') \
     + ":" + PATH_BUILD_BIN \
 
-export PATH_WEBDRIVER_BINARY := env('PATH_WEBDRIVER_BINARY', \
+export E2E_WEBDRIVER_BINARY := env('E2E_WEBDRIVER_BINARY', \
     if os() == 'windows' \
     {PATH_BUILD_BIN + "/msedgedriver.exe" } \
     else { shell('which $1 || true', 'WebKitWebDriver')})
@@ -144,7 +144,7 @@ webdriver-download: init
 
     zip_file=$PATH_BUILD_TEMP/webdriver.zip
     unzip_dir=$PATH_BUILD_TEMP/webdriver
-    unzip_file=$PATH_WEBDRIVER_BINARY
+    unzip_file=$E2E_WEBDRIVER_BINARY
     unzip_file_compares=$unzip_dir/msedgedriver.$version.exe
 
     # if there's unzip_file and unzip_file_compares
@@ -162,7 +162,7 @@ webdriver-download: init
     unzip -o $zip_file -d $unzip_dir
     cp $unzip_dir/msedgedriver.exe $unzip_file
     cp $unzip_dir/msedgedriver.exe $unzip_file_compares
-    test -f $PATH_WEBDRIVER_BINARY
+    test -f $E2E_WEBDRIVER_BINARY
 
 [group('webview')]
 [doc('downloads the webdriver')]
@@ -171,12 +171,12 @@ webdriver-download:
     #!/bin/bash
     if [ -n "$JUSTFILE_TRACE" ]; then set -x; fi
     set -euo pipefail
-    if [ -n "$PATH_WEBDRIVER_BINARY" ] && [ -f $PATH_WEBDRIVER_BINARY ]; then
-        echo "Webdriver found at: '$PATH_WEBDRIVER_BINARY'"
+    if [ -n "$E2E_WEBDRIVER_BINARY" ] && [ -f $E2E_WEBDRIVER_BINARY ]; then
+        echo "Webdriver found at: '$E2E_WEBDRIVER_BINARY'"
         exit 0
     else
         error_message=$(cat <<EOF
-    Error: Webdriver is not found at: '$PATH_WEBDRIVER_BINARY' (PATH_WEBDRIVER_BINARY).
+    Error: Webdriver is not found at: '$E2E_WEBDRIVER_BINARY' (E2E_WEBDRIVER_BINARY).
     To download it, you can use the following commands:
       sudo apt update
       sudo apt install webkit2gtk-driver xvfb -y

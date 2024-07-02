@@ -5,6 +5,7 @@ import assert from "node:assert";
 import {logger} from "./logger"
 import * as setup from "./setup"
 import * as webdriver from "./webdriver"
+import {E2E_LOG_LEVEL} from "./setup";
 
 logger.debug(setup)
 
@@ -22,7 +23,7 @@ describe("Tauri E2E tests", async () => {
             spawnArgsConfigurators: [
                 webdriver.configureHostArgs(setup.E2E_WEBDRIVER_HOST),
                 webdriver.configurePortArgs(setup.E2E_WEBDRIVER_PORT),
-                webdriver.configureLoggingArgs(setup.E2E_WEBDRIVER_LOG_LEVEL)
+                webdriver.configureLoggingArgs(setup.E2E_LOG_LEVEL)
             ]
         })
 
@@ -56,7 +57,6 @@ describe("Tauri E2E tests", async () => {
         await webdriver.cleanup(driver, webDriver)
         logger.info("WebDriver session cleaned up")
     });
-
 
 
     test("Send hello world to input", async () => {

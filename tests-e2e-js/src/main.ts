@@ -28,7 +28,7 @@ describe("Tauri E2E tests", async () => {
 
         // Configure the WebDriver capabilities
         capabilities = webdriver.configureCapabilities({
-            binary: setup.PATH_TEST_BINARY,
+            binary: setup.E2E_TAURI_BINARY,
         })
 
         // Create the WebDriver session
@@ -48,7 +48,7 @@ describe("Tauri E2E tests", async () => {
         });
 
         // Wait for the body element to be present
-        await driver.wait(until.elementLocated({css: 'body'}), setup.TESTS_TIMEOUT);
+        await driver.wait(until.elementLocated({css: 'body'}));
     });
 
     afterEach(async () => {
@@ -70,7 +70,7 @@ describe("Tauri E2E tests", async () => {
         await driver.wait(until.elementLocated({css: button}));
         await driver.findElement({css: button}).click();
 
-        await driver.wait(until.elementLocated({css: text}), setup.TESTS_TIMEOUT);
+        await driver.wait(until.elementLocated({css: text}));
         const helloWorldText = await driver.findElement({css: text}).getText()
 
         assert(helloWorldText === "Hello, Hello World! You've been greeted from Rust!")

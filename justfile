@@ -24,7 +24,7 @@ export PATH_DEBUG_BINARY := env('PATH_DEBUG_BINARY', \
 export PATH_RELEASE_BINARY := env('PATH_RELEASE_BINARY', \
     absolute_path(".") / "target/release"   / TAURI_BIN_NAME + exe)
 
-export PATH_TEST_BINARY := env('PATH_TEST_BINARY', \
+export E2E_TAURI_BINARY := env('E2E_TAURI_BINARY', \
     PATH_RELEASE_BINARY)
 
 export E2E_LOG_LEVEL    := env('E2E_LOG_LEVEL',    'info')
@@ -92,7 +92,7 @@ test-e2e: webdriver-download
     npm run build
 
     just tauri build --no-bundle
-    test -f $PATH_TEST_BINARY
+    test -f $E2E_TAURI_BINARY
 
     node --test --test-force-exit \
          --test-timeout=$E2E_NODE_TIMEOUT \

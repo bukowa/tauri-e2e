@@ -1,0 +1,35 @@
+{
+  "name": "@tauri-e2e/selenium",
+  "version": "0.0.0",
+  "main": "./dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "convert-examples": "node ./scripts/examples-to-md.js ./examples",
+    "docs": "npm run convert-examples && typedoc --tsconfig tsconfig.json"
+  },
+  "dependencies": {
+    "find-cache-dir": "^5.0.0",
+    "selenium-webdriver": "^4.22.0"
+  },
+  "exports": {
+    ".": {
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./*": {
+      "default": "./dist/*.js",
+      "types": "./dist/*.d.ts"
+    },
+    "./*/*": {
+      "default": "./dist/*/*.js",
+      "types": "./dist/*/*.d.ts"
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "@types/selenium-webdriver": "^4.1.24",
+    "typedoc": "^0.26.3",
+    "typescript": "^5.5.2"
+  }
+}

@@ -6,6 +6,6 @@
   },
   "workspaces": [
     "tauri-app",
-    "tests-e2e-js"
+    "selenium/javascript/"
   ]
 }

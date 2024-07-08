@@ -3,20 +3,19 @@
   "include-component-in-tag": true,
   "bump-minor-pre-major": true,
   "bump-patch-for-minor-pre-major": true,
-  "exclude-paths": [
-    "tests-e2e-js"
-  ],
+  "separate-pull-requests": true,
   "plugins": [
     "sentence-case",
     {
       "type": "node-workspace",
       "merge": false,
-      "groupName": "js",
-      "updatePeerDependencies": false,
       "components": [
         "@tauri-e2e/selenium"
       ]
     }
+  ],
+  "exclude-paths": [
+    "tests-e2e-js"
   ],
   "packages": {
     "selenium/javascript": {

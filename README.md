@@ -5,7 +5,8 @@
 [![macOS Tests](https://github.com/bukowa/tauri-e2e/actions/workflows/tests-macos.yaml/badge.svg?branch=master&event=push)](https://github.com/bukowa/tauri-e2e/actions/workflows/tests-macos.yaml)
 
 This project demonstrates how to perform end-to-end testing with `Tauri v2` using `Selenium`.<br>
-For documentation of how to use the `Selenium` package see https://bukowa.github.io/tauri-e2e/
+For documentation of how to use the `Selenium` package see 
+- https://bukowa.github.io/tauri-e2e/
 
 # State
 - [x] `Windows` support

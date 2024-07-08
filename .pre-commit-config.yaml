@@ -14,6 +14,14 @@ repos:
         pass_filenames: false
         always_run: true
 
+# need https://github.com/TypeStrong/typedoc/issues/2628
+#      - id: docs-selenium-javascript
+#        name: Build Selenium JavaScript
+#        entry: bash -c "JUST_UNSTABLE=1 just selenium::docs"
+#        language: system
+#        pass_filenames: false
+#        always_run: true
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: ae7cee538b6ba3457d1307040d6d29962692e8f6
     hooks:

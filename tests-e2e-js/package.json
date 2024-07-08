@@ -1,6 +1,7 @@
 {
   "name": "tests-e2-js",
   "version": "0.0.0",
+  "private": true,
   "type": "module",
   "main": "src/main.ts",
   "scripts": {

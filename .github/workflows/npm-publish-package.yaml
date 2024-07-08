@@ -1,0 +1,61 @@
+name: "Node: Publish NPM Package"
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        type: string
+        description: 'Package to publish'
+        required: true
+      tag:
+        type: string
+        description: 'Tag to publish'
+        required: true
+
+  workflow_call:
+    inputs:
+      package:
+        type: string
+        description: 'Package to publish'
+        required: true
+      tag:
+        type: string
+        description: 'Tag to publish'
+        required: true
+    secrets:
+      NPM_REGISTRY_TOKEN:
+        description: 'Token for publishing NPM packages'
+        required: true
+
+jobs:
+
+  publish-npm-package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-tags: true
+
+      - name: Setup Node
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_REGISTRY_TOKEN }}
+        with:
+          node-version: 22.2.0
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install Dependencies
+        run: |
+          npm install --loglevel verbose
+
+      - name: Build Package
+        run: |
+          npm run --workspace=${{ inputs.package }} build
+
+      - name: Publish Package
+        run: |
+          npm publish \
+            --access public \
+            --provenance \
+            --workspace ${{ inputs.package }}

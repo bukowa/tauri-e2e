@@ -10,7 +10,7 @@ const PACKAGE_NAME = "@tauri-e2e/selenium"
 /**
  * Version of the package.
  */
-const VERSION = "0.1.1" // x-release-please-version
+const VERSION = "0.2.0" // x-release-please-version
 
 export {
     VERSION,

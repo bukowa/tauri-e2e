@@ -48,14 +48,6 @@ jobs:
           node-version: 22.2.0
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Install Dependencies
-        run: |
-          npm install --loglevel verbose
-
-      - name: Build Package
-        run: |
-          npm run --workspace=${{ inputs.package }} build
-
       - name: Publish Package
         run: |
           npm publish \

@@ -27,7 +27,7 @@
         {
           "type": "json",
           "path": "tests-e2e-js/package.json",
-          "jsonpath": "$['dependencies']['@tauri-e2e/selenium']"
+          "jsonpath": "$.['dependencies']['@tauri-e2e/selenium']"
         }
       ]
     }

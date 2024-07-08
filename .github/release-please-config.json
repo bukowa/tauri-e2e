@@ -24,6 +24,7 @@
       "release-type": "node",
       "changelog-path": "CHANGELOG.md",
       "extra-files": [
+        "src/metadata/index.ts",
         {
           "type": "json",
           "path": "/tests-e2e-js/package.json",

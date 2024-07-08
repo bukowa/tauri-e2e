@@ -3,14 +3,11 @@
   "include-component-in-tag": true,
   "bump-minor-pre-major": true,
   "bump-patch-for-minor-pre-major": true,
-  "exclude-paths": [
-    "tests-e2e-js"
-  ],
   "plugins": [
     "sentence-case",
     {
       "type": "node-workspace",
-      "merge": false,
+      "merge": true,
       "groupName": "js",
       "updatePeerDependencies": false,
       "components": [
@@ -19,6 +16,7 @@
     }
   ],
   "packages": {
+    "tests-e2e-js": {},
     "selenium/javascript": {
       "component": "@tauri-e2e/selenium",
       "release-type": "node",

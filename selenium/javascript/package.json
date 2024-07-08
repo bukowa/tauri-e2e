@@ -56,7 +56,7 @@
   "description": "Selenium for Tauri",
   "author": "Mateusz Kurowski",
   "homepage": "https://github.com/bukowa/tauri-e2e",
-  "repository": "https://bukowa.github.io/tauri-e2e/",
+  "repository": "https://github.com/bukowa/tauri-e2e",
   "keywords": [
     "tauri",
     "e2e",
@@ -69,4 +69,3 @@
     "edge"
   ]
 }
-

@@ -22,10 +22,14 @@
     "selenium/javascript": {
       "component": "@tauri-e2e/selenium",
       "release-type": "node",
-      "changelog-path": "CHANGELOG.md"
-    },
-    "tests-e2e-js": {
-      "release-type": "node"
+      "changelog-path": "CHANGELOG.md",
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "tests-e2e-js/package.json",
+          "jsonpath": "$['dependencies']['@tauri-e2e/selenium']"
+        }
+      ]
     }
   },
   "changelog-sections": [

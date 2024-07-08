@@ -1,5 +1,6 @@
 {
   "name": "@tauri-e2e/selenium",
+  "license": "MIT",
   "version": "0.0.0",
   "main": "./dist/index.js",
   "type": "module",
@@ -51,5 +52,21 @@
     "@types/selenium-webdriver": "^4.1.24",
     "typedoc": "^0.26.3",
     "typescript": "^5.5.2"
-  }
+  },
+  "description": "Selenium for Tauri",
+  "author": "Mateusz Kurowski",
+  "homepage": "https://github.com/bukowa/tauri-e2e",
+  "repository": "https://bukowa.github.io/tauri-e2e/",
+  "keywords": [
+    "tauri",
+    "e2e",
+    "selenium",
+    "webdriver",
+    "webview",
+    "wry",
+    "webkitgtk2",
+    "webview2",
+    "edge"
+  ]
 }
+

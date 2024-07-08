@@ -1,7 +1,22 @@
 repos:
-  -   repo: https://github.com/pre-commit/pre-commit-hooks
-      rev: ae7cee538b6ba3457d1307040d6d29962692e8f6
-      hooks:
-        -   id: check-yaml
-        -   id: end-of-file-fixer
-        -   id: trailing-whitespace
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: ae7cee538b6ba3457d1307040d6d29962692e8f6
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  - repo: local
+    hooks:
+      - id: npm pkg fix
+        name: Fix NPM Package
+        entry: bash -c "npm pkg fix"
+        language: system
+        pass_filenames: false
+
+      - id: build-selenium-javascript
+        name: Build Selenium JavaScript
+        entry: bash -c "JUST_UNSTABLE=1 just selenium::build"
+        language: system
+        pass_filenames: false
+        always_run: true

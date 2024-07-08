@@ -3,6 +3,9 @@
   "include-component-in-tag": true,
   "bump-minor-pre-major": true,
   "bump-patch-for-minor-pre-major": true,
+  "exclude-paths": [
+    "tests-e2e-js"
+  ],
   "plugins": [
     "sentence-case",
     {
@@ -11,7 +14,8 @@
       "groupName": "js",
       "updatePeerDependencies": true,
       "components": [
-        "@tauri-e2e/selenium"
+        "@tauri-e2e/selenium",
+        "tests-e2e-js"
       ]
     }
   ],
@@ -20,6 +24,9 @@
       "component": "@tauri-e2e/selenium",
       "release-type": "node",
       "changelog-path": "CHANGELOG.md"
+    },
+    "tests-e2e-js": {
+      "release-type": "node"
     }
   },
   "changelog-sections": [

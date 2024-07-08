@@ -1,13 +1,13 @@
 {
   "name": "tests-e2-js",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "main": "src/main.ts",
   "scripts": {
     "build": "tsc"
   },
   "dependencies": {
-    "@tauri-e2e/selenium": "0.0.0",
+    "@tauri-e2e/selenium": "0.1.0",
     "log4js": "^6.9.1"
   },
   "devDependencies": {

@@ -29,6 +29,9 @@ on:
 jobs:
 
   publish-npm-package:
+    permissions:
+      id-token: write
+
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

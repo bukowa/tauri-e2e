@@ -14,8 +14,7 @@
       "groupName": "js",
       "updatePeerDependencies": false,
       "components": [
-        "@tauri-e2e/selenium",
-        "tests-e2e-js"
+        "@tauri-e2e/selenium"
       ]
     }
   ],

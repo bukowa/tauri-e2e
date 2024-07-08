@@ -12,7 +12,7 @@
       "type": "node-workspace",
       "merge": false,
       "groupName": "js",
-      "updatePeerDependencies": true,
+      "updatePeerDependencies": false,
       "components": [
         "@tauri-e2e/selenium",
         "tests-e2e-js"

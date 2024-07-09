@@ -33,6 +33,11 @@
           "type": "json",
           "path": "/package-lock.json",
           "jsonpath": "$['packages']['tests-e2e-js']['dependencies']['@tauri-e2e/selenium']"
+        },
+        {
+          "type": "json",
+          "path": "/package-lock.json",
+          "jsonpath": "$['packages']['selenium/javascript']['version']"
         }
       ]
     }

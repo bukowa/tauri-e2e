@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/bukowa/tauri-e2e/compare/@tauri-e2e/selenium-v0.2.0...@tauri-e2e/selenium-v0.2.1) (2024-07-09)
+
+
+### Bug Fixes
+
+* Build before publish ([c72836f](https://github.com/bukowa/tauri-e2e/commit/c72836faf471ab2b0ffdb534ffefd67d024d0063))
+
 ## [0.2.0](https://github.com/bukowa/tauri-e2e/compare/@tauri-e2e/selenium-v0.1.1...@tauri-e2e/selenium-v0.2.0) (2024-07-08)
 
 

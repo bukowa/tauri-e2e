@@ -8,7 +8,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@tauri-e2e/selenium": "0.2.0",
+    "@tauri-e2e/selenium": "0.2.1",
     "log4js": "^6.9.1"
   },
   "devDependencies": {

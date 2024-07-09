@@ -27,5 +27,5 @@ repos:
     hooks:
       - id: check-yaml
       - id: end-of-file-fixer
-        exclude: 'dist/*'
+        exclude: 'dist/.*'
       - id: trailing-whitespace

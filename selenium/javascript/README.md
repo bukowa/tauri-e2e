@@ -7,4 +7,5 @@ For full documentation see:
 ### [Quick Start](./examples/quick-start.md)
 ### [Selenium API](./examples/selenium-api.md)
 
+
 Documentation was generated using [typedoc](https://typedoc.org/) - check it out!

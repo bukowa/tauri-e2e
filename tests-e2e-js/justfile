@@ -1,7 +1,7 @@
 mod selenium '../selenium/justfile'
 
 deps:
-    npm i --prefer-offline --no-audit --progress=false
+    npm i
 
 build: deps
     just selenium::build

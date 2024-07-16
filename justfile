@@ -11,7 +11,7 @@ build: deps
     just tauri-app::build --no-bundle
 
 deps:
-    npm i --prefer-offline --no-audit --progress=false
+    npm i
 
 test: build
     just selenium::test

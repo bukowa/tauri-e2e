@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/bukowa/tauri-e2e/compare/@tauri-e2e/selenium-v0.2.1...@tauri-e2e/selenium-v0.2.2) (2024-08-12)
+
+
+### Features
+
+* **selenium/javascript:** Cleanup driver properly on linux with webkitgtk2 ([d8db0ff](https://github.com/bukowa/tauri-e2e/commit/d8db0ff0f5e9df7189a126926034d17a661ce4b5))
+
 ## [0.2.1](https://github.com/bukowa/tauri-e2e/compare/@tauri-e2e/selenium-v0.2.0...@tauri-e2e/selenium-v0.2.1) (2024-07-09)
 
 

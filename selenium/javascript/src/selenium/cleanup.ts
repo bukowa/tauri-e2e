@@ -16,6 +16,7 @@ async function cleanupSession(driver: selenium.WebDriver) {
             break;
         case "linux":
             // - https://github.com/tauri-apps/wry/pull/1311/files
+            await driver.close();
             break;
     }
 }

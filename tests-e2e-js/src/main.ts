@@ -24,6 +24,8 @@ describe("Tauri E2E tests", async () => {
     beforeEach(async () => {
         // Spawn WebDriver process.
         webDriver = await e2e.launch.spawnWebDriver()
+        // wait 1 second
+        await new Promise(r => setTimeout(r, 1000));
         // Create driver session.
         driver = new e2e.selenium.Builder().build();
         // Wait for the body element to be present

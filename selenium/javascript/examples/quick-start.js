@@ -57,7 +57,7 @@ await driver.wait(until.elementLocated({css: 'body'}));
 
 // Get the title.
 let title = await driver.getTitle();
-assert.equal(title, 'Tauri App');
+assert.equal(title, 'Tauri App', await driver.getPageSource());
 
 // Properly cleanup WebDriver session.
 // This will close the Tauri window and the WebDriver session.

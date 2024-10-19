@@ -1,9 +1,5 @@
-.logo.vite:hover {
-  filter: drop-shadow(0 0 2em #747bff);
-}
-
-.logo.typescript:hover {
-  filter: drop-shadow(0 0 2em #2d79c7);
+.logo.vanilla:hover {
+  filter: drop-shadow(0 0 2em #ffe21c);
 }
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;

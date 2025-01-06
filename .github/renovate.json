@@ -6,7 +6,7 @@
   ],
   "osvVulnerabilityAlerts": true,
   "extends": [
-    "config:base"
+    "config:recommended"
   ],
   "prHourlyLimit": 0,
   "assignees": [

@@ -8,6 +8,9 @@ This project demonstrates how to perform end-to-end testing with `Tauri v2` usin
 For documentation of how to use the `Selenium` package see
 - https://bukowa.github.io/tauri-e2e/
 
+# Note: 
+This project was primarily created as an experiment to learn JavaScript/TypeScript package management and release processes. While it may not represent the best or most sustainable approach for testing in the future, it can still serve as a useful example or starting point for similar projects.
+
 # State
 - [x] `Windows` support
   - [x] github actions support
